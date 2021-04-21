@@ -1,8 +1,8 @@
 #OBJS specifies which files to compile as part of the project
-SRC = grid.cpp
+SRC = grid.c
 
 #CC specifies which compiler we're using
-CC = g++
+CC = gcc
 
 #COMPILER_FLAGS specifies the additional compilation options we're using
 # -w suppresses all warnings
