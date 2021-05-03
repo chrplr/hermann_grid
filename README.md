@@ -1,5 +1,7 @@
 # Hermann grid
 
+Check out https://chrplr.github.io/hermann_grid/
+
 <christophe@pallier.org>
 
 Implementation of the [Hermann grid illusion](https://en.wikipedia.org/wiki/Grid_illusion) in C using [Simple DirectMedia Layer (SDL)](http://libsdl.org).
@@ -7,18 +9,22 @@ Implementation of the [Hermann grid illusion](https://en.wikipedia.org/wiki/Grid
 ![Grid stimulus](grid.png)
 
 
+
 ## Usage
 
-A linux executable is provided. Under Linux, just run:
 
-    ./grid
 
-Then use the four arrow keys to modify the squares' width and the gap between them. 
+A linux executable (`builds/linux/grid`) is provided. 
+It assumes that SDL2 from libsdl is installed. Under Ubuntu:
+
+    sudo apt install libsdl2-2.0-0 libsdl2-gfx-1.0-0 libsdl2-image-2.0-0 libsdl2-mixer-2.0-0 libsdl2-net-2.0-0 libsdl2-ttf-2.0-0
+
+When the program is running, use the four arrow keys to modify the squares' width and the gap between them. 
 
 
 ## Compilation
 
-1. Install SDL2 from libsdl.org (see https://wiki.libsdl.org/Installation).
+1. Install SDL2-dev from libsdl.org (see https://wiki.libsdl.org/Installation).
  Under Ubuntu::
  
         sudo apt install libsdl2-dev
@@ -28,6 +34,16 @@ Then use the four arrow keys to modify the squares' width and the gap between th
 
         ./configure
         make
-    
+
+
+## Development 
+
+### TODO
+
+* Add some help text at the bottom of the windows that explains what kkeys can be pressed (even better: "Press 'h' for help" and display the keybindings in the windows.
+
+* Add a keypress 'S' that would save the current grid in a png file, whith the parameter of the grid in the name
+
+* Add cross compilation to target Windows, ...
 
 
