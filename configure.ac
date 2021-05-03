@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.69])
-AC_INIT([Hermann-Grid], [1.0], [christophe@pallier.org])
+AC_INIT([Hermann-Grid], [1.1], [christophe@pallier.org])
 AC_CONFIG_SRCDIR([grid.c])
 AC_CONFIG_HEADERS([config.h])
 
