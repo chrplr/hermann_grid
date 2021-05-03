@@ -2,7 +2,7 @@
 
 /* Copyright © Christophe Pallier
 
-   Time-stamp: <2021-05-03 09:57:39 christophe@pallier.org> 
+   Time-stamp: <2021-05-03 10:34:04 christophe@pallier.org> 
 
    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -36,8 +36,11 @@ void render_grid(int n_cells, int cell_width, int gap)
     int x_offset = (SCREEN_WIDTH - array_width) / 2;
     int y_offset = (SCREEN_HEIGHT - array_width) / 2;
 
+    //  white background
     SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
     SDL_RenderClear(sdlRenderer);
+
+    // The squares will be drawn in black
     SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
 
     SDL_Rect r;
@@ -50,12 +53,13 @@ void render_grid(int n_cells, int cell_width, int gap)
             r.y = row * (cell_width + gap) + y_offset;
             SDL_RenderFillRect(sdlRenderer, &r);
         }
+    SDL_RenderPresent(sdlRenderer);
 }
 
 void process_keys();
 void init();
 void clean();
-
+inline void wait(int delay_in_ms) { SDL_Delay(delay_in_ms); };
 
 int main()
 {
@@ -67,8 +71,7 @@ int main()
 
     while (running) {
         render_grid(n_cells, cell_width, gap);
-        SDL_RenderPresent(sdlRenderer);
-        SDL_Delay(10);
+        wait(10);
         process_keys();
     }
 
