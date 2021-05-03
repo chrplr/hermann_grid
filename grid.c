@@ -2,7 +2,7 @@
 
 /* Copyright © Christophe Pallier
 
-   Time-stamp: <2021-04-21 10:13:50 christophe@pallier.org> 
+   Time-stamp: <2021-05-03 09:57:39 christophe@pallier.org> 
 
    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
@@ -12,6 +12,7 @@
 
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <SDL.h>
 
 
@@ -21,107 +22,140 @@ SDL_Renderer *sdlRenderer;
 const int SCREEN_WIDTH = 1024;
 const int SCREEN_HEIGHT = 1024;
 
+int running = 0;
 
 const int n_cells = 10;
 int cell_width = 50;
 int gap = 10;
 
 
-void render_grid(int n_cells, int cell_width, int gap) {
-
-  int array_width = n_cells * cell_width + (n_cells - 1) * gap;
-  int x_offset = (SCREEN_WIDTH - array_width ) / 2;
-  int y_offset = (SCREEN_HEIGHT - array_width ) / 2;
-
-  SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
-  SDL_RenderClear(sdlRenderer);
-  SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
-
-  SDL_Rect r;
-  r.w = cell_width;
-  r.h = cell_width;
-
-  for (int col = 0; col < n_cells; col++)
-    for (int row = 0; row < n_cells; row ++) {
-      r.x = col * (cell_width + gap) + x_offset;
-      r.y = row * (cell_width + gap) + y_offset;
-      SDL_RenderFillRect(sdlRenderer, &r);
-    }
-}
-
-
-int is_relevant_event(void *nada, SDL_Event* event)
+void render_grid(int n_cells, int cell_width, int gap)
 {
-  if (event->type == SDL_QUIT || event->type == SDL_KEYDOWN)
-    return 1;
-  return 0;
+
+    int array_width = n_cells * cell_width + (n_cells - 1) * gap;
+    int x_offset = (SCREEN_WIDTH - array_width) / 2;
+    int y_offset = (SCREEN_HEIGHT - array_width) / 2;
+
+    SDL_SetRenderDrawColor(sdlRenderer, 255, 255, 255, 255);
+    SDL_RenderClear(sdlRenderer);
+    SDL_SetRenderDrawColor(sdlRenderer, 0, 0, 0, 255);
+
+    SDL_Rect r;
+    r.w = cell_width;
+    r.h = cell_width;
+
+    for (int col = 0; col < n_cells; col++)
+        for (int row = 0; row < n_cells; row++) {
+            r.x = col * (cell_width + gap) + x_offset;
+            r.y = row * (cell_width + gap) + y_offset;
+            SDL_RenderFillRect(sdlRenderer, &r);
+        }
+}
+
+void process_keys();
+void init();
+void clean();
+
+
+int main()
+{
+    init();
+
+    printf("Use the four arrows keys to modify paramaters\n\n");
+
+    running = 1;
+
+    while (running) {
+        render_grid(n_cells, cell_width, gap);
+        SDL_RenderPresent(sdlRenderer);
+        SDL_Delay(10);
+        process_keys();
+    }
+
+    clean();
+
+    return 0;
 }
 
 
-int main() {
-
-  SDL_Init(SDL_INIT_VIDEO);
-
-  sdlWindow = SDL_CreateWindow("Herman Grid", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
-
-  sdlRenderer = SDL_CreateRenderer(sdlWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
-
-  SDL_SetEventFilter(is_relevant_event, NULL);
+int is_relevant_event(void *nada, SDL_Event * event)
+{
+    if (event->type == SDL_QUIT || event->type == SDL_KEYDOWN)
+        return 1;
+    return 0;
+}
 
 
-  printf("Use the four arrows keys to modify paramaters\n\n");
+void init()
+{
 
-  int quit = 0;
-
-  while (!quit) {
-
-    render_grid(n_cells, cell_width, gap);
-    SDL_RenderPresent(sdlRenderer);
-
-
-    SDL_Event event;
-
-    while (SDL_PollEvent(&event)) {
-      switch (event.type) {
-      case SDL_QUIT: {
-        quit = 1;
-        break;
-      }
-      case SDL_KEYDOWN:
-        switch (event.key.keysym.sym) {
-        case SDLK_ESCAPE: {
-          quit = 1;
-          break;
-        };
-        case SDLK_RIGHT: {
-          gap++;
-          break;
-        };
-        case SDLK_LEFT: {
-          if (gap > 1) gap--;
-          break;
-        }
-        case SDLK_UP: {
-          cell_width++;
-          break;
-        }
-        case SDLK_DOWN: {
-          if (cell_width > 1) cell_width--;
-          break;
-        }
-        }
-      }
-      /* cout << "size: " << cell_width << " -- gap: " << gap << " -- ratio: " << ((float)cell_width / (float)gap) << endl ; */
-      printf("side: %d -- gap: %d -- ratio: %.2f\n", cell_width, gap, (float)cell_width/(gap));
+    if (SDL_Init(SDL_INIT_VIDEO) != 0) {
+         printf("Unable to initialize SDL: %s", SDL_GetError());
+         exit(1);
     }
-    SDL_Delay(10);
-  }
+
+     sdlWindow =
+          SDL_CreateWindow("Herman Grid", SDL_WINDOWPOS_CENTERED,
+                           SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH,
+                           SCREEN_HEIGHT, 0);
+
+     if (sdlWindow == NULL) {
+          printf("Unable to open window: %s", SDL_GetError());
+          exit(1);
+     }
+
+     sdlRenderer =
+          SDL_CreateRenderer(sdlWindow, -1,
+                             SDL_RENDERER_ACCELERATED |
+                             SDL_RENDERER_PRESENTVSYNC);
+
+     if (sdlRenderer == NULL) {
+          printf("Could not create renderer: %s\n", SDL_GetError());
+          exit(1);
+     }
+
+     SDL_SetEventFilter(is_relevant_event, NULL);
+}
 
 
-  SDL_DestroyRenderer(sdlRenderer);
-  SDL_DestroyWindow(sdlWindow);
+void clean() {
+     SDL_DestroyRenderer(sdlRenderer);
+     SDL_DestroyWindow(sdlWindow);
+     SDL_Quit();
+}
 
-  SDL_Quit();
 
-  return 0;
+void process_keys() {
+        SDL_Event event;
+
+        while (SDL_PollEvent(&event)) {
+            switch (event.type) {
+            case SDL_QUIT:
+                running = 0;
+                break;
+            case SDL_KEYDOWN:
+                switch (event.key.keysym.sym) {
+                case SDLK_ESCAPE:
+                    running = 0;
+                    break;
+                case SDLK_RIGHT:
+                    gap++;
+                    break;
+                case SDLK_LEFT:
+                    if (gap > 1)
+                        gap--;
+                    break;
+                case SDLK_UP:
+                    cell_width++;
+                    break;
+                case SDLK_DOWN:
+                    if (cell_width > 1)
+                        cell_width--;
+                    break;
+                }
+            }
+            /* cout << "size: " << cell_width << " -- gap: " << gap << " -- ratio: " << ((float)cell_width / (float)gap) << endl ; */
+            printf("side: %d -- gap: %d -- ratio: %.2f\n",
+                   cell_width, gap, (float) cell_width / (gap));
+        }
 }
