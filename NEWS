@@ -1,0 +1,2 @@
+2021-05-16 Second version released: screenshot by pressing 'S', and `wait()` renamed `delay()` to avoid conflict under MacOSX
+2021-05-03 First version released

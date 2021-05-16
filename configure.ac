@@ -3,8 +3,8 @@
 
 AC_PREREQ([2.69])
 AC_INIT([Hermann-Grid], [1.1], [christophe@pallier.org])
-AC_CONFIG_SRCDIR([grid.c])
-AC_CONFIG_HEADERS([config.h])
+AC_CONFIG_SRCDIR([src/grid.c])
+AC_CONFIG_HEADERS([src/config.h])
 
 # Checks for programs.
 AC_PROG_CC
@@ -27,5 +27,5 @@ LIBS="$LIBS $SDL_LIBS"
 # Checks for library functions.
 
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile src/Makefile])
 AC_OUTPUT
