@@ -14,16 +14,22 @@ Implementation of the [Hermann grid illusion](https://en.wikipedia.org/wiki/Grid
 
 ## Linux executable
 
-A Linux executable (`builds/linux/grid`), compiled under Ubuntu 20.04, is provided (It requires that SDL2 from libsdl is installed: Under Ubuntu: `sudo apt install libsdl2-2.0-0` ; under Fedora: `sudo dnf install SDL2`)
+
+After running the compilation and installation as described below, if everything worked out well, an executable file is `grid` (or `grid.exe` under Windows) is available in `$HOME/bin`. 
+
+If `$HOME/bin` is in the `PATH` environment variable, you just have type `grid` on a command line to start it, otherwise, type `~/bin/grid`.
 
 While `grid` is running, the user can press the four arrow keys to modify the squares width and the gap. 
 
 One can also press the 'S' key to save a screenshot of the content of the current window.
 
-
 ## Compilation
 
+
 ### Linux
+
+Note: A Linux executable (`builds/linux/grid`), compiled under Ubuntu 20.04, is provided (It requires that SDL2 from libsdl is installed: Under Ubuntu: `sudo apt install libsdl2-2.0-0` ; under Fedora: `sudo dnf install SDL2`)
+
 
 1. Install SDL2 development library. You can do from the source code, following the instructions at <https://wiki.libsdl.org/Installation>, or from your distribution package manager (Ubuntu: `sudo apt install libsdl2-dev`; Fedora:  `sudo dnf install SDL2 SDL2-devel`.
 
