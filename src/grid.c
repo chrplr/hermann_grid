@@ -10,7 +10,9 @@
    The Software is provided "as is", without warranty of any kind, express or implied, including but not limited to the warranties of merchantability, fitness for a particular purpose and noninfringement. In no event shall the authors or copyright holders be liable for any claim, damages or other liability, whether in an action of contract, tort or otherwise, arising from, out of or in connection with the software or the use or other dealings in the Software.
 */
 
-#define _GNU_SOURCE		// asprintf
+// #define _GNU_SOURCE		// asprintf
+//#define _MSC_VER 1300
+#include "asprintf0.h"
 
 #include <stdio.h>
 #include <stdlib.h>		// exit
@@ -76,7 +78,7 @@ delay (int delay_in_ms)
 };
 
 int
-main ()
+main (int argv, char * argc[])
 {
      init ();
 
