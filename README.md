@@ -74,7 +74,8 @@ Note: Other SDL2 libraries are also worth installing:
         ./configure prefix=$HOME && make && make install
 
 
-
+Actually, it does not work :(
+Use: $ gcc grid.c -o grid -I/opt/local/i686-w64-mingw32/include/SDL2 -Dmain=SDL_main -L/opt/local/i686-w64-mingw32/lib -lmingw32 -lSDL2main -lSDL2 -mwindows
     
 ## Development 
 
